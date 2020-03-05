@@ -1,0 +1,9 @@
+# Exclude Git files
+.git
+.gitignore
+
+Dockerfile
+README.md
+.DS_Store
+env.*
+*.pyc
