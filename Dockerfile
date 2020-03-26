@@ -26,6 +26,9 @@ FROM dev as test
 # Install packages required for testing
 RUN pip install pytest watchdog[watchmedo]
 
+# Configure Pytest options
+ENV PYTEST_ADDOPTS="--color=yes"
+
 ENTRYPOINT ["watchmedo", "auto-restart", "--recursive", "--directory=.", "--pattern=*.py", "--ignore-patterns=*/.*"]
 CMD ["pytest"]
 
