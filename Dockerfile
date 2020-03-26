@@ -1,5 +1,5 @@
-# Pull official Python base image
-FROM python:3.8-slim-buster as dev
+# Use official Python base image
+FROM python:3.8-slim-buster as base
 
 # Update package managers
 RUN apt-get update && pip install --upgrade pip
@@ -12,6 +12,11 @@ RUN pip install --no-cache-dir --requirement requirements.txt
 WORKDIR /home/app
 COPY . .
 
+
+##################################################
+# Development image (uses Flask development server)
+FROM base as development
+
 # Use Flask in development mode
 ENV FLASK_ENV=development
 
@@ -20,8 +25,8 @@ CMD ["--host=0.0.0.0", "--port=80"]
 
 
 ##################################################
-# Testing image based on dev image
-FROM dev as test
+# Testing image (uses Watchdog to run Pytest whenever files change)
+FROM base as test
 
 # Install packages required for testing
 RUN pip install pytest watchdog[watchmedo]
@@ -34,8 +39,8 @@ CMD ["pytest"]
 
 
 ##################################################
-# Production image based on dev image
-FROM dev as production
+# Production image (uses Gunicorn as the WSGI server)
+FROM base as production
 
 # Use Flask in production mode
 ENV FLASK_ENV=production
