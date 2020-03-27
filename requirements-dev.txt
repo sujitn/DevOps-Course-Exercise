@@ -1,0 +1,2 @@
+pytest==5.4.1
+watchdog[watchmedo]==0.10.2
