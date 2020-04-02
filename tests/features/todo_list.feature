@@ -7,3 +7,13 @@ Feature: To-do List
         Given there are existing items
         When I am on the index page
         Then I can see a list of items
+
+    Scenario: Items are listed by status
+        Given there are existing items
+        When I am on the index page
+        Then done items are listed after todo items
+
+    Scenario: Todo items can be started
+        Given there are existing items
+        When I am on the index page
+        Then all todo items have a start button
