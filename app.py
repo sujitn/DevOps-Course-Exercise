@@ -1,11 +1,11 @@
 import os
-from flask import Flask, render_template, request, redirect, url_for
-import session_items as session
-import requests
-import TrelloList from entity.list
-
-import sys
 import json
+from flask import Flask, render_template, request, redirect, url_for
+import requests
+
+from entity.trello_list import TrelloList 
+from entity.trello_card import TrelloCard
+from entity.item import Item
 
 trello_base_url = os.getenv('TRELLO_API_BASE_URL')
 trello_key = os.getenv('TRELLO_KEY')
@@ -16,10 +16,10 @@ app = Flask(__name__)
 app.config.from_object('flask_config.Config')
 
 def extract_trello_lists(response_item):
-    return  {
-        'id': response_item['id'],
-        'name': response_item['name'],
-    }
+    return TrelloList(response_item['id'], response_item['name'])
+
+def extract_trello_items(response_item):
+    return TrelloCard(response_item['id'], response_item['name'], response_item['idList'])
 
 def get_lists_on_board():
     endpoint = trello_base_url + '/1/boards/' + trello_board_id + '/lists'
@@ -63,23 +63,12 @@ def update_item_list(item_id, list_id):
     )
     app.logger.debug('Trello returned ' + str(response.status_code))
 
-def extract_trello_items(response_item):
-    return  {
-        'id': response_item['id'],
-        'title': response_item['name'],
-        'listId': response_item['idList'],
-    }
-
 def map_trello_items(trello_lists, trello_items):
     items = []
     for trello_item in trello_items:
         for trello_list in trello_lists:
-            if (trello_item['listId'] == trello_list['id']):
-                items.append({
-                    'id' : trello_item['id'],
-                    'title': trello_item['title'],
-                    'status': trello_list['name']
-                    })
+            if (trello_item.listId == trello_list.id):
+                items.append(Item(trello_item.id, trello_item.title, trello_list.name))
                 break
     return items
 
@@ -87,8 +76,8 @@ def get_id_of_list(name):
     app.logger.debug('Getting list with name ' + name)
     lists = get_lists_on_board()
     for list in lists:
-        if(list['name'] == name):
-            return list['id']
+        if(list.name == name):
+            return list.id
     app.logger.debug('No list found with name ' + name)
 
 @app.route('/')
