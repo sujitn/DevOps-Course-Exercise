@@ -118,3 +118,6 @@ venv
 
 # IDE
 .idea
+
+# Selenium
+geckodriver.log
