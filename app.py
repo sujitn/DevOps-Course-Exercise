@@ -6,6 +6,8 @@ import requests
 from entity.trello_list import TrelloList 
 from entity.trello_card import TrelloCard
 from entity.item import Item
+from entity.http_method import HttpMethod
+from entity.list_name import ListName
 
 trello_base_url = os.getenv('TRELLO_API_BASE_URL')
 trello_key = os.getenv('TRELLO_KEY')
@@ -13,7 +15,6 @@ trello_token = os.getenv('TRELLO_TOKEN')
 trello_board_id = os.getenv('TRELLO_BOARD_ID')
 
 app = Flask(__name__)
-app.config.from_object('flask_config.Config')
 
 def extract_trello_lists(response_item):
     return TrelloList(response_item['id'], response_item['name'])
@@ -21,47 +22,50 @@ def extract_trello_lists(response_item):
 def extract_trello_items(response_item):
     return TrelloCard(response_item['id'], response_item['name'], response_item['idList'])
 
-def get_lists_on_board():
-    endpoint = trello_base_url + '/1/boards/' + trello_board_id + '/lists'
-    params = { 'key': trello_key, 'token': trello_token }
-    app.logger.debug('Fetching lists from Trello board.\n\tMethod: Get\n\tURL: ' + endpoint + '\n\tParameters: ' + json.dumps(params))
-    
-    response = requests.request(
-        "GET",
-        endpoint,
-        params=params
+def make_trello_request(method, endpoint, params):
+    app.logger.debug(
+    f"""Sending HTTP request to Trello API.
+        Method: {method.value}
+        URL: {endpoint}
+        Parameters: {json.dumps(params)}
+    """
     )
-    app.logger.debug('Trello returned ' + str(response.status_code) + '. ' + str(len(response.json())) + ' items found.')
+
+    response = requests.request(method.value, endpoint, params=params)
+    details = f'{len(response.json())} items found.' if method == "GET" else ''
+    app.logger.debug(f'Trello returned {response.status_code}.{details}')
+
+    return response
+
+def get_lists_on_board():
+    endpoint = f'{trello_base_url}/boards/{trello_board_id}/lists'
+    params = { 'key': trello_key, 'token': trello_token }
+    method = HttpMethod.Get
+    
+    response = make_trello_request(method, endpoint, params)
     return list(map(extract_trello_lists,response.json()))
 
 def get_items_on_board():
-    endpoint = trello_base_url + '/1/boards/' + trello_board_id + '/cards'
+    endpoint = f'{trello_base_url}/boards/{trello_board_id}/cards'
     params = { 'key': trello_key, 'token': trello_token }
-    app.logger.debug('Fetching items from Trello board.\n\tMethod: Get\n\tURL: ' + endpoint + '\n\tParameters: ' + json.dumps(params))
-    
-    response = requests.request(
-        "GET",
-        endpoint,
-        params=params
-    )
-    app.logger.debug('Trello returned ' + str(response.status_code) + '. ' + str(len(response.json())) + ' items found.')
+    method = HttpMethod.Get
+
+    response = make_trello_request(method, endpoint, params)
     return list(map(extract_trello_items,response.json()))
 
 def update_item_list(item_id, list_id):
-    endpoint = trello_base_url + '/1/cards/' + item_id
-    params = {
-        'key': trello_key,
-        'token': trello_token,
-        'idList': list_id
-        }
-    app.logger.debug('Updating item on Trello board.\n\tMethod: Put\n\tURL: ' + endpoint + '\n\tParameters: ' + json.dumps(params))
-    
-    response = requests.request(
-        "PUT",
-        endpoint,
-        params=params
-    )
-    app.logger.debug('Trello returned ' + str(response.status_code))
+    endpoint = f'{trello_base_url}/cards/{item_id}'
+    params = { 'key': trello_key, 'token': trello_token, 'idList': list_id}
+    method = HttpMethod.Put
+
+    make_trello_request(method, endpoint, params)
+
+def create_item(item_name, list_id):
+    endpoint = f'{trello_base_url}/cards'
+    params = { 'key': trello_key, 'token': trello_token, 'name': item_name, 'idList': list_id}
+    method = HttpMethod.Post
+
+    make_trello_request(method, endpoint, params)
 
 def map_trello_items(trello_lists, trello_items):
     items = []
@@ -73,12 +77,12 @@ def map_trello_items(trello_lists, trello_items):
     return items
 
 def get_id_of_list(name):
-    app.logger.debug('Getting list with name ' + name)
+    app.logger.debug(f'Getting list with name {name}')
     lists = get_lists_on_board()
     for list in lists:
         if(list.name == name):
             return list.id
-    app.logger.debug('No list found with name ' + name)
+    app.logger.debug(f'No list found with name {name}')
 
 @app.route('/')
 def index():
@@ -90,10 +94,16 @@ def index():
 
 @app.route('/items/<id>/complete')
 def complete_item(id):
-    done_list_id = get_id_of_list('Done')
+    done_list_id = get_id_of_list(ListName.Done.value)
     update_item_list(id, done_list_id)
     return redirect(url_for('index')) 
 
+@app.route('/items/new', methods=['Get'])
+def add_item():
+    title = request.form['title']
+    to_do_list_id = get_id_of_list(ListName.ToDo.value)
+    create_item(title, to_do_list_id)
+    return redirect(url_for('index')) 
 
 if __name__ == '__main__':
     app.run()
