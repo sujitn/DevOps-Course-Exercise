@@ -98,7 +98,7 @@ def complete_item(id):
     update_item_list(id, done_list_id)
     return redirect(url_for('index')) 
 
-@app.route('/items/new', methods=['Get'])
+@app.route('/items/new', methods=[HttpMethod.Post.value])
 def add_item():
     title = request.form['title']
     to_do_list_id = get_id_of_list(ListName.ToDo.value)
