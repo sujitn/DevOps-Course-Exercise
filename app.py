@@ -3,13 +3,9 @@ import trello_items as trello
 from view_model import ViewModel
 
 
-def create_app(config=None):
+def create_app():
     app = Flask(__name__)
-
-    if config:
-        app.config.from_object(config)
-    else:
-        app.config.from_object('app_config.Config')
+    app.config.from_object('app_config.Config')
 
     @app.route('/')
     def index():
