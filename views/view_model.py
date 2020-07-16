@@ -34,3 +34,7 @@ class ViewModel:
     @property
     def older_items(self):
         return filter_items_last_modified_before_today(self.done_items)
+
+    @property
+    def display_older_items(self):
+        return len(self.older_items) > 0
