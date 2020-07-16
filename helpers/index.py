@@ -21,3 +21,10 @@ def get_id_of_list(name):
         if(list.name == name):
             return list.id
     log.debug(f'No list found with name {name}')
+
+def filter_items_by_list(items, list_name):
+    filtered_items = []
+    for item in items:
+        if(item.status == list_name):
+            filtered_items.append(item)
+    return filtered_items

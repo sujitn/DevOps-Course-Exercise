@@ -4,6 +4,7 @@ import logging
 
 from entity.http_method import HttpMethod
 from entity.list_name import ListName
+from views.view_model import ViewModel
 
 from trello_requests.trello_requests import get_items_on_board, get_lists_on_board, update_item_list, create_item
 from helpers.index import get_id_of_list, map_trello_items
@@ -21,7 +22,7 @@ def index():
     trello_items = get_items_on_board()
 
     items = map_trello_items(trello_lists, trello_items)
-    return render_template('index.html', items=items)
+    return render_template('index.html', view_model=ViewModel(items))
 
 
 @app.route('/items/<id>/complete')
