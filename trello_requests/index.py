@@ -1,7 +1,7 @@
 import json
 import consts
 from trello_requests.make_trello_request import make_trello_request
-from trello_requests.helpers import extract_trello_items, extract_trello_lists
+from trello_requests.helpers import extract_trello_item, extract_trello_list
 from entity.http_method import HttpMethod
 from entity.trello_list import TrelloList
 from entity.trello_card import TrelloCard

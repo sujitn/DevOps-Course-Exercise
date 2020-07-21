@@ -11,7 +11,7 @@ import consts
 
 @pytest.fixture
 def client():
-    file_path = find_dotenv('.env.test')
+    file_path = find_dotenv('test_env_file')
     load_dotenv(file_path, override=True)
 
     test_app = create_app()
@@ -53,11 +53,11 @@ def stub_get_items_on_board():
 
 def test_index_page(monkeypatch, client):
     monkeypatch.setattr(
-        'trello_requests.index.get_lists_on_board.__code__',
+        'trello_requests.lists.get_lists_on_board.__code__',
         stub_get_lists_on_board.__code__
     )
     monkeypatch.setattr(
-        'trello_requests.index.get_items_on_board.__code__',
+        'trello_requests.items.get_items_on_board.__code__',
         stub_get_items_on_board.__code__
     )
 

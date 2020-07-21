@@ -2,7 +2,7 @@ import logging
 from datetime import datetime
 
 from entity.item import Item
-from trello_requests.index import get_lists_on_board
+from trello_requests.lists import get_lists_on_board
 
 log = logging.getLogger('app')
 

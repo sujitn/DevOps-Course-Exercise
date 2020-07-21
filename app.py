@@ -1,14 +1,15 @@
 from flask import Flask, render_template, request, redirect, url_for
 import sys
 import logging
+import os
 
 from entity.http_method import HttpMethod
 from entity.list_name import ListName
 from views.view_model import ViewModel
 
-from trello_requests.index import get_items_on_board, get_lists_on_board, update_item_list, create_item
+from trello_requests.items import get_items_on_board, update_item_list, create_item
+from trello_requests.lists import get_lists_on_board
 from helpers.index import get_id_of_list, map_trello_items
-
 
 def create_app():
     app = Flask(__name__)

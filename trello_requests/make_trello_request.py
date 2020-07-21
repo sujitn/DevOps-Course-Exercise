@@ -1,10 +1,18 @@
 import requests
 import json
 import logging
+import consts
 
 log = logging.getLogger('app')
 
-def make_trello_request(method, endpoint, params):
+def make_trello_request(method, endpoint, extra_params = {}):
+    params = {
+        'key': consts.trello_key,
+        'token': consts.trello_token,
+    }
+
+    params.update(extra_params)
+
     log.debug(
     f"""Sending HTTP request to Trello API.
         Method: {method.value}
