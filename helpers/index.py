@@ -6,7 +6,6 @@ from trello_requests.index import get_lists_on_board
 
 log = logging.getLogger('app')
 
-
 trello_date_time_format = "%Y-%m-%dT%H:%M:%S.%fZ"
 
 

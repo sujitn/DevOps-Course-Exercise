@@ -21,11 +21,34 @@ def client():
 
 
 def stub_get_lists_on_board():
-    return [TrelloList('test-list-id', 'test-name')]
+    return [
+        TrelloList('test-to-do-list-id', 'To do'),
+        TrelloList('test-doing-list-id', 'Doing'),
+        TrelloList('test-done-list-id', 'Done')
+    ]
 
 
 def stub_get_items_on_board():
-    return [TrelloCard('test-title', 'test-title','test-list-id', '2020-06-24T14:51:12.321Z')]
+    return [
+        TrelloCard(
+            'test-to-do-card-id',
+            'Test To Do Card Title',
+            'test-to-do-list-id',
+            '2020-06-24T14:51:12.321Z'
+        ),
+        TrelloCard(
+            'test-doing-card-id',
+            'Test Doing Card Title',
+            'test-doing-list-id',
+            '2020-06-24T14:51:12.321Z'
+        ),
+        TrelloCard(
+            'test-done-card-id',
+            'Test Done Card Title',
+            'test-done-list-id',
+            '2020-06-24T14:51:12.321Z'
+        ),
+    ]
 
 
 def test_index_page(monkeypatch, client):
@@ -40,4 +63,8 @@ def test_index_page(monkeypatch, client):
 
     response = client.get('/')
 
+    content = response.data.decode('utf8')
     assert response.status_code == 200
+    assert 'Test To Do Card Title' in content
+    assert 'Test Doing Card Title' in content
+    assert 'Test Done Card Title' in content
