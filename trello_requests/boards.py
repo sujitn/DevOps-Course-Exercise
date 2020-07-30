@@ -18,4 +18,4 @@ def delete_board(board_id):
     endpoint = f'{consts.trello_base_url}/{board_id}'
     method = HttpMethod.Delete
 
-    make_trello_request(method, endpoint, params)
+    make_trello_request(method, endpoint)
