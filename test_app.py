@@ -11,7 +11,7 @@ import consts
 
 @pytest.fixture
 def client():
-    file_path = find_dotenv('test_env_file')
+    file_path = find_dotenv('test_env_file.txt')
     load_dotenv(file_path, override=True)
 
     test_app = create_app()

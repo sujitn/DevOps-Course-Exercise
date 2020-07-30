@@ -13,7 +13,7 @@ log = logging.getLogger('app')
 @pytest.fixture(scope='module')
 def test_app():
     file_path = find_dotenv()
-    load_dotenv(file_path)
+    load_dotenv(file_path, override=True)
 
     # Create the new board & update the board id environment variable
     board_id = create_board('test-name')
@@ -22,13 +22,11 @@ def test_app():
     # construct the new application
     application = app.create_app()
 
-    log.debug(os.getenv('TRELLO_KEY'))
-
     # start the app in its own thread.
     thread = Thread(target=lambda: application.run(use_reloader=False))
     thread.daemon = True
     thread.start()
-    yield app
+    yield application
 
     # Tear Down
     thread.join(1)

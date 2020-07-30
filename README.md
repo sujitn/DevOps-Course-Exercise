@@ -27,4 +27,6 @@ Now visit [`http://localhost:5000/`](http://localhost:5000/) in your web browser
 
 ## Testing
 
-To test, run `python -m pytest`
+To run all tests, run `python -m pytest`
+To run integration tests, run `python -m pytest test_app.py`
+To run end-to-end tests, run `python -m pytest e2e_tests/end_to_end_test.py`
