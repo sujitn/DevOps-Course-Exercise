@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 import session_items as session
 from item import TrelloItem
 from trello import TrelloClient
+from viewModel import ViewModel
 import os
 
 app = Flask(__name__)
@@ -23,10 +24,10 @@ def index():
     board_lists = board.list_lists()
     for list_item in board_lists:
         for card in list_item.list_cards():
-            test = TrelloItem(card.id, list_item.name,card.name)
-            items.append(TrelloItem(card.id, list_item.name,card.name))
-    
-    return render_template('index.html', items = items)
+            items.append(TrelloItem(card.id, list_item.name,card.name, card.dateLastActivity))
+
+    item_view_model = ViewModel(items)
+    return render_template('index.html', view_model=item_view_model)
 
 @app.route('/items/new', methods=['POST'])
 def add_item():

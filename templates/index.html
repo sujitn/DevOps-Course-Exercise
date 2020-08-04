@@ -25,12 +25,12 @@
       </form>
     </div>
   </div>
-
+  
   <div class="row">
     <div class="col-md-12">
-      <h2>Items</h2>
+      <h2>ToDo Items</h2>
       <ul class="list-group mb-4">
-        {% for item in items %}
+        {% for item in view_model.todo_items %}
           <li class="list-group-item flex-column">
             <div class="d-flex w-100 justify-content-between">
               <h5 class="mt-1 mb-1">{{ item.title }}</h5>
@@ -46,4 +46,97 @@
       </ul>
     </div>
   </div>
+  
+  <div class="row">
+    <div class="col-md-12">
+      <h2>Doing Items</h2>
+      <ul class="list-group mb-4">
+        {% for item in view_model.doing_items %}
+          <li class="list-group-item flex-column">
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="mt-1 mb-1">{{ item.title }}</h5>
+              {% if item.status != 'Done' %}
+                <a href="{{ url_for('complete_item', id=item.id) }}" class="btn btn-sm btn-primary">Complete</a>
+              {% endif %}
+			  {% if item.status == 'Done' %}
+                <a href="{{ url_for('uncomplete_item', id=item.id) }}" class="btn btn-sm btn-primary">UnComplete</a>
+              {% endif %}
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  
+  {% if view_model.show_all_done_items %}
+  <div class="row">
+    <div class="col-md-12">
+      <h2>Done Items</h2>
+      <ul class="list-group mb-4">
+        {% for item in view_model.done_items %}
+          <li class="list-group-item flex-column">
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="mt-1 mb-1">{{ item.title }}</h5>
+              {% if item.status != 'Done' %}
+                <a href="{{ url_for('complete_item', id=item.id) }}" class="btn btn-sm btn-primary">Complete</a>
+              {% endif %}
+			  {% if item.status == 'Done' %}
+                <a href="{{ url_for('uncomplete_item', id=item.id) }}" class="btn btn-sm btn-primary">UnComplete</a>
+              {% endif %}
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  {% else %}
+  <div class="row">
+    <div class="col-md-12">
+      <h2>Recently Done Items</h2>
+      <ul class="list-group mb-4">
+        {% for item in view_model.recent_done_items %}
+          <li class="list-group-item flex-column">
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="mt-1 mb-1">{{ item.title }}</h5>
+              {% if item.status != 'Done' %}
+                <a href="{{ url_for('complete_item', id=item.id) }}" class="btn btn-sm btn-primary">Complete</a>
+              {% endif %}
+			  {% if item.status == 'Done' %}
+                <a href="{{ url_for('uncomplete_item', id=item.id) }}" class="btn btn-sm btn-primary">UnComplete</a>
+              {% endif %}
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+	<details>
+      <div class="row">
+			<div class="col-md-12">
+			  <h2>Older Done Items</h2>
+			  <ul class="list-group mb-4">
+				{% for item in view_model.older_done_items %}
+				  <li class="list-group-item flex-column">
+					<div class="d-flex w-100 justify-content-between">
+					  <h5 class="mt-1 mb-1">{{ item.title }}</h5>
+					  {% if item.status != 'Done' %}
+						<a href="{{ url_for('complete_item', id=item.id) }}" class="btn btn-sm btn-primary">Complete</a>
+					  {% endif %}
+					  {% if item.status == 'Done' %}
+						<a href="{{ url_for('uncomplete_item', id=item.id) }}" class="btn btn-sm btn-primary">UnComplete</a>
+					  {% endif %}
+					</div>
+				  </li>
+				{% endfor %}
+			  </ul>
+			</div>
+		</div>
+      <summary>Older Tasks</summary>
+    </details>
+  </div>
+  {% endif %}
+  
+  
+  
+  
+  
 {% endblock %}
