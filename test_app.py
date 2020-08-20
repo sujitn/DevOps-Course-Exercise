@@ -6,8 +6,6 @@ from app import create_app
 from entity.trello_list import TrelloList
 from entity.trello_card import TrelloCard
 
-import consts
-
 
 @pytest.fixture
 def client():

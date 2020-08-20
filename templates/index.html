@@ -36,7 +36,7 @@ content %}
       {% for item in view_model.to_do_items %}
       <li class="list-group-item flex-column">
         <div class="d-flex w-100 justify-content-between">
-          <div class="row" id="to-do-item-{{item.title}}">
+          <div class="row to-do-item">
             <h5 class="mt-1 mb-1">{{ item.title }}</h5>
           </div>
           <a
@@ -64,7 +64,7 @@ content %}
           </div>
           <a
             href="{{ url_for('complete_item', id=item.id) }}"
-            class="btn btn-sm btn-primary"
+            class="btn btn-sm btn-primary mark-done"
             >Mark as Done</a
           >
         </div>
@@ -81,7 +81,7 @@ content %}
       {% for item in (view_model.done_items if view_model.show_all_done_items else view_model.recent_done_items) %}
       <li class="list-group-item flex-column">
         <div class="d-flex w-100 justify-content-between">
-          <div class="row" id="done-item-{{item.title}}">
+          <div class="row done-item" >
             <h5 class="mt-1 mb-1">{{ item.title }}</h5>
           </div>
         </div>

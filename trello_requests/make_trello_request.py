@@ -1,14 +1,14 @@
 import requests
 import json
 import logging
-import consts
+import os
 
 log = logging.getLogger('app')
 
 def make_trello_request(method, endpoint, extra_params = {}):
     params = {
-        'key': consts.trello_key,
-        'token': consts.trello_token,
+        'key': os.getenv("TRELLO_KEY"),
+        'token': os.getenv("TRELLO_TOKEN"),
     }
 
     params.update(extra_params)

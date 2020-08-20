@@ -24,9 +24,18 @@ You should see output similar to the following:
 ```
 Now visit [`http://localhost:5000/`](http://localhost:5000/) in your web browser to view the app.
 
+## Trello Requirements
+
+This app relies on being hooked up to a Trello board with the following column names: "To do", "Doing", "Done" (see `entity/list_name.py`).
 
 ## Testing
 
-To run all tests, run `python -m pytest`
-To run integration tests, run `python -m pytest test_app.py`
-To run end-to-end tests, run `python -m pytest e2e_tests/end_to_end_test.py`
+### Prerequisites
+
+You will need a `geckodriver.exe` file at the project root, and Firefox installed.
+
+### Running the tests
+
+To run all tests, run `pytest`
+To run integration tests, run `pytest test_app.py`
+To run end-to-end tests, run `pytest e2e_tests/end_to_end_test.py`

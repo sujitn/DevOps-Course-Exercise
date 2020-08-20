@@ -1,5 +1,5 @@
 import json
-import consts
+import os
 from trello_requests.make_trello_request import make_trello_request
 from trello_requests.helpers import extract_trello_item
 from entity.http_method import HttpMethod
@@ -7,7 +7,7 @@ from entity.trello_card import TrelloCard
 
 
 def get_items_on_board():
-    endpoint = f'{consts.trello_base_url}/boards/{consts.trello_board_id}/cards'
+    endpoint = f'{os.getenv("TRELLO_API_BASE_URL")}/boards/{os.getenv("TRELLO_BOARD_ID")}/cards'
     method = HttpMethod.Get
 
     response = make_trello_request(method, endpoint)
@@ -15,7 +15,7 @@ def get_items_on_board():
 
 
 def update_item_list(item_id, list_id):
-    endpoint = f'{consts.trello_base_url}/cards/{item_id}'
+    endpoint = f'{os.getenv("TRELLO_API_BASE_URL")}/cards/{item_id}'
     params = {
         'idList': list_id
     }
@@ -25,7 +25,7 @@ def update_item_list(item_id, list_id):
 
 
 def create_item(item_name, list_id):
-    endpoint = f'{consts.trello_base_url}/cards'
+    endpoint = f'{os.getenv("TRELLO_API_BASE_URL")}/cards'
     params = {
         'name': item_name,
         'idList': list_id
