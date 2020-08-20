@@ -57,6 +57,8 @@ def test_task_journey(driver, test_app):
     new_item_title_input.send_keys("New element")
     new_item_title_input.send_keys(Keys.RETURN)
 
+    driver.implicitly_wait(1)
+
     to_do_item = driver.find_element_by_class_name("to-do-item")
     assert to_do_item.text == "New element"
 
