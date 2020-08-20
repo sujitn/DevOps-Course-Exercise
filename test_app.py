@@ -5,6 +5,7 @@ import json
 from app import create_app
 from entity.trello_list import TrelloList
 from entity.trello_card import TrelloCard
+from entity.mock_response import MockResponse
 
 
 @pytest.fixture
@@ -18,45 +19,56 @@ def client():
         yield client
 
 
-def stub_get_lists_on_board():
-    return [
-        TrelloList('test-to-do-list-id', 'To do'),
-        TrelloList('test-doing-list-id', 'Doing'),
-        TrelloList('test-done-list-id', 'Done')
+def stub_lists_request(method, endpoint, extra_params={}):
+    responseJson = [
+        {
+            'id': 'test-to-do-list-id',
+            'name': 'To do'
+        },
+        {
+            'id': 'test-doing-list-id',
+            'name': 'Doing'
+        },
+        {
+            'id': 'test-done-list-id',
+            'name': 'Done'
+        }
     ]
+    return MockResponse(responseJson)
 
 
-def stub_get_items_on_board():
-    return [
-        TrelloCard(
-            'test-to-do-card-id',
-            'Test To Do Card Title',
-            'test-to-do-list-id',
-            '2020-06-24T14:51:12.321Z'
-        ),
-        TrelloCard(
-            'test-doing-card-id',
-            'Test Doing Card Title',
-            'test-doing-list-id',
-            '2020-06-24T14:51:12.321Z'
-        ),
-        TrelloCard(
-            'test-done-card-id',
-            'Test Done Card Title',
-            'test-done-list-id',
-            '2020-06-24T14:51:12.321Z'
-        ),
+def stub_items_request(method, endpoint, extra_params={}):
+    responseJson = [
+        {
+            'id': 'test-to-do-card-id',
+            'name': 'Test To Do Card Title',
+            'idList': 'test-to-do-list-id',
+            'dateLastActivity': '2020-06-24T14:51:12.321Z'
+        },
+        {
+            'id': 'test-doing-card-id',
+            'name': 'Test Doing Card Title',
+            'idList': 'test-doing-list-id',
+            'dateLastActivity': '2020-06-24T14:51:12.321Z'
+        },
+        {
+            'id': 'test-done-card-id',
+            'name': 'Test Done Card Title',
+            'idList': 'test-done-list-id',
+            'dateLastActivity': '2020-06-24T14:51:12.321Z'
+        }
     ]
+    return MockResponse(responseJson)
 
 
 def test_index_page(monkeypatch, client):
     monkeypatch.setattr(
-        'trello_requests.lists.get_lists_on_board.__code__',
-        stub_get_lists_on_board.__code__
+        'trello_requests.lists.make_trello_request',
+        stub_lists_request
     )
     monkeypatch.setattr(
-        'trello_requests.items.get_items_on_board.__code__',
-        stub_get_items_on_board.__code__
+        'trello_requests.items.make_trello_request',
+        stub_items_request
     )
 
     response = client.get('/')
