@@ -6,3 +6,8 @@ class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY')
     if not SECRET_KEY:
         raise ValueError("No SECRET_KEY set for Flask application. Did you forget to run setup.sh?")
+        
+    TRELLO_BASE_URL = 'https://api.trello.com/1'
+    TRELLO_API_KEY = os.environ.get('TRELLO_API_KEY')
+    TRELLO_TOKEN = os.environ.get('TRELLO_TOKEN')
+    TRELLO_BOARD_ID = os.environ.get('TRELLO_BOARD_ID')
