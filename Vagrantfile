@@ -8,20 +8,17 @@ Vagrant.configure("2") do |config|
     libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev \
     xz-utils tk-dev libffi-dev liblzma-dev python-openssl git
     
-    git clone https://github.com/pyenv/pyenv.git /home/vagrant/.pyenv
-    echo 'export PYENV_ROOT="/home/vagrant/.pyenv"' >> /home/vagrant/.profile
-    echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> /home/vagrant/.profile
-    echo -e 'if command -v pyenv 1>/dev/null 2>&1; then\n  eval "$(pyenv init -)"\nfi' >> /home/vagrant/.profile
-    
-    exec "$SHELL"
-  SHELL
+    git clone https://github.com/pyenv/pyenv.git ~/.pyenv
+    echo 'export PYENV_ROOT="~/.pyenv"' >> ~/.profile
+    echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.profile
+    echo -e 'if command -v pyenv 1>/dev/null 2>&1; then\n  eval "$(pyenv init -)"\nfi' >> ~/.profile
 
-  config.vm.provision "shell", :privileged => false, inline: <<-SHELL
+    source ~/.profile
+
     pyenv install 3.8.5
     pyenv global 3.8.5
 
     curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
-    source $HOME/.poetry/env
   SHELL
 
   config.trigger.after :up do |trigger|
@@ -30,7 +27,7 @@ Vagrant.configure("2") do |config|
     trigger.run_remote = {privileged: false, inline: "
       cd /vagrant
       poetry install
-      poetry run flask run --host 0.0.0.0
+      nohup poetry run flask run --host 0.0.0.0 &
     "}
   end
 
