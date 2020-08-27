@@ -1,7 +1,6 @@
 Vagrant.configure("2") do |config|
   config.vm.box = "hashicorp/bionic64"
-  config.vm.network "forwarded_port", guest: 5000, host: 5000
-  
+
   config.vm.provision "shell", privileged: false, inline: <<-SHELL
     sudo apt-get update
 	sudo apt-get install -y build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev python-openssl git
@@ -24,8 +23,10 @@ Vagrant.configure("2") do |config|
     trigger.run_remote = {privileged: false, inline: "
       cd /vagrant
       poetry install
-      poetry run flask run --host 0.0.0.0 &
-    "}
+      poetry run flask run --host 0.0.0.0
+	  "}
   end
+  
+  config.vm.network "forwarded_port", guest: 5000, host: 5000
   
 end
