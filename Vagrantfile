@@ -9,7 +9,7 @@ Vagrant.configure("2") do |config|
     xz-utils tk-dev libffi-dev liblzma-dev python-openssl git
     
     git clone https://github.com/pyenv/pyenv.git ~/.pyenv
-    echo 'export PYENV_ROOT="~/.pyenv"' >> ~/.profile
+    echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.profile
     echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.profile
     echo -e 'if command -v pyenv 1>/dev/null 2>&1; then\n  eval "$(pyenv init -)"\nfi' >> ~/.profile
 
@@ -27,7 +27,7 @@ Vagrant.configure("2") do |config|
     trigger.run_remote = {privileged: false, inline: "
       cd /vagrant
       poetry install
-      nohup poetry run flask run --host 0.0.0.0 &
+      nohup poetry run flask run --host 0.0.0.0 > app_logs.log &
     "}
   end
 

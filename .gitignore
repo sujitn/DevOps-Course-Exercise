@@ -121,3 +121,4 @@ geckodriver.log
 
 ### Vagrant
 .vagrant
+app_logs.log
