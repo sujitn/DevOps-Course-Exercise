@@ -28,6 +28,11 @@ Now visit [`http://localhost:5000/`](http://localhost:5000/) in your web browser
 
 This app relies on being hooked up to a Trello board with the following column names: "To do", "Doing", "Done" (see `entity/list_name.py`).
 
+## Run on a VM
+
+You can run this on a VM by running `vagrant up` at the root. Once the command has finished, as above you can visit [`http://localhost:5000/`](http://localhost:5000/) in your web browser to view the app. Any logs from this are saved to `app_logs.log`.
+
+
 ## Testing
 
 ### Prerequisites
