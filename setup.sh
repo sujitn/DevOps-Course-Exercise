@@ -4,9 +4,8 @@
 python -m venv env
 source env/bin/activate
 
-# Upgrade pip and install required packages
-pip install --upgrade pip
-pip install -r requirements.txt
+# Install required packages
+poetry install
 
 # Create a .env file from the .env.template
 cp -n .env.template .env
