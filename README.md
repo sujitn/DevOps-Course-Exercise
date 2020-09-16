@@ -9,7 +9,7 @@ $ source setup.sh
 
 Once the setup script has completed and all packages have been installed, start the Flask app by running:
 ```bash
-$ Poetry run flask run
+$ poetry run flask run
 ```
 
 You should see output similar to the following:
