@@ -1,5 +1,6 @@
 FROM python:3.8.5-buster as base
-COPY . .
+COPY . ./app
+WORKDIR /app
 RUN pip install "poetry==1.0.10" \
   && poetry install
 

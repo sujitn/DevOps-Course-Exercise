@@ -30,8 +30,13 @@ This app relies on being hooked up to a Trello board with the following column n
 
 ## Run on a VM
 
+### Vagrant
+
 You can run this on a VM by running `vagrant up` at the root. Once the command has finished, as above you can visit [`http://localhost:5000/`](http://localhost:5000/) in your web browser to view the app. Any logs from this are saved to `app_logs.log`.
 
+### Docker
+
+To run the app on Docker in development mode (with hot reloading), run `docker-compose up dev-app`. To run it in production mode, run `docker-compose up prod-app`. Once again the app can then be found at [`http://localhost:5000/`](http://localhost:5000/).
 
 ## Testing
 

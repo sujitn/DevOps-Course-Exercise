@@ -8,6 +8,8 @@ services:
     build: 
       context: .
       target: development
+    volumes:
+      - "./:/app"
   prod-app:
     env_file: .env
     ports:
