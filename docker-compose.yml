@@ -1,0 +1,19 @@
+version: "3.8"
+
+services:
+  dev-app:
+    env_file: .env
+    ports:
+      - "5000:5000"
+    build: 
+      context: .
+      target: development
+    volumes:
+      - "./:/app"
+  prod-app:
+    env_file: .env
+    ports:
+      - "5000:8000"
+    build:
+      context: .
+      target: production
