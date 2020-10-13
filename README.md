@@ -2,14 +2,9 @@
 
 ## Getting started
 
-The project uses a virtual environment to isolate package dependencies. To create the virtual environment and install required packages, run the following from a shell terminal (e.g. Git Bash on Windows):
-```bash
-$ source setup.sh
-```
 
-Once the setup script has completed and all packages have been installed, start the Flask app by running:
 ```bash
-$ flask run
+docker run --env-file ./.env -p5000:5000 --mount type=bind,source="$(pwd)"todo_app,target=/app/todo_app todo-app:dev
 ```
 
 You should see output similar to the following:

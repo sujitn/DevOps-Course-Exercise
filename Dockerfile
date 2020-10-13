@@ -7,12 +7,13 @@ ENV PYTHONFAULTHANDLER=1 \
 	PIP_DISABLE_PIP_VERSION_CHECK=on \
 	PIP_DEFAULT_TIMEOUT=100 \
 	POETRY_VERSION=1.1.0
+	
 RUN pip install "poetry==$POETRY_VERSION"
-
-COPY . ./app
-WORKDIR /app
+COPY pyproject.toml .
 RUN poetry config virtualenvs.create false
 RUN poetry install --no-interaction --no-ansi
+COPY . ./app
+WORKDIR /app
 
 FROM base as production
 RUN pip install gunicorn
