@@ -1,2 +1,16 @@
+.git
 .gitignore
+.pytest_cache
+.vagrant
+.vscode
+.env
+.env.template
+.DS_Store
+*.pyc
+
+Dockerfile
+README.md
 env.*
+app_logs.log
+poetry.lock
+Vagrantfile

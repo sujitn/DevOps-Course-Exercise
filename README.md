@@ -2,8 +2,14 @@
 
 ## Getting started
 
-
+Run locally via 
 ```bash
+poetry run flask run
+```
+
+Run via Docker 
+```bash
+docker build --target development --tag todo-app:dev .  
 docker run --env-file ./.env -p5000:5000 --mount type=bind,source="$(pwd)"todo_app,target=/app/todo_app todo-app:dev
 ```
 
