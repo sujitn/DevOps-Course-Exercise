@@ -2,14 +2,15 @@
 
 ## Getting started
 
-The project uses a virtual environment to isolate package dependencies. To create the virtual environment and install required packages, run the following from a shell terminal (e.g. Git Bash on Windows):
+Run locally via 
 ```bash
-$ source setup.sh
+poetry run flask run
 ```
 
-Once the setup script has completed and all packages have been installed, start the Flask app by running:
+Run via Docker 
 ```bash
-$ flask run
+docker build --target development --tag todo-app:dev .  
+docker run --env-file ./.env -p5000:5000 --mount type=bind,source="$(pwd)"todo_app,target=/app/todo_app todo-app:dev
 ```
 
 You should see output similar to the following:
