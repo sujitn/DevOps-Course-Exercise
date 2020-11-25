@@ -12,4 +12,5 @@ script:
     -e TRELLO_API_KEY=$TRELLO_API_KEY
     -e TRELLO_TOKEN=$TRELLO_TOKEN
     -e TRELLO_BOARD_ID=$TRELLO_BOARD_ID
+    -e SECRET_KEY=$SECRET_KEY
     test tests/test_e2e.py
