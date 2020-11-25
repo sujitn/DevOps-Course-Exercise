@@ -1,2 +1,9 @@
+services:
+- docker
+
+before-script:
+  - docker build -t test .
+
 script:
-- echo "hello world"
+  - docker run test test
+
