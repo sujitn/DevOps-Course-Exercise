@@ -7,4 +7,9 @@ before-script:
 script:
   - docker run test tests/test_viewmodel.py
   - docker run test tests/test_integration.py
-
+  - >
+    docker run
+    -e TRELLO_API_KEY=$TRELLO_API_KEY
+    -e TRELLO_TOKEN=$TRELLO_TOKEN
+    -e TRELLO_BOARD_ID=$TRELLO_BOARD_ID
+    test tests/test_e2e.py
