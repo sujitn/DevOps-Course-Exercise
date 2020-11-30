@@ -7,6 +7,10 @@ Run locally via
 poetry run flask run
 ```
 
+Run Via Vagrant
+
+You can run this on a VM by running `vagrant up` at the root.
+
 Run via Docker 
 ```bash
 docker build --target development --tag todo-app:dev .  
@@ -24,3 +28,8 @@ You should see output similar to the following:
  * Debugger PIN: 226-556-590
 ```
 Now visit [`http://localhost:5000/`](http://localhost:5000/) in your web browser to view the app.
+
+
+Running the tests
+
+To run all tests, run `pytest`
