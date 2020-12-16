@@ -10,6 +10,7 @@ before-install:
 before-script:
   - docker build --target test --tag test .
   - docker build --target production --tag $DOCKER_USERNAME/todo-app:latest .
+  - docker --tag $DOCKER_USERNAME/todo-app:latest registry.heroku.com/$HEROKU_APP/web
 
 script:
   - docker run test tests/test_viewmodel.py
@@ -28,7 +29,6 @@ after-script:
 deploy:   
         provider: script
         script: 
-               docker tag $DOCKER_USERNAME/todo-app:latest registry.heroku.com/$HEROKU_APP/web
                docker push registry.heroku.com/$HEROKU_APP/web;
                heroku container:release web --app $HEROKU_APP
         on:
