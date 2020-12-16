@@ -1,8 +1,12 @@
 services:
 - docker
 
+before-install:
+  - echo "$DOCKER_PASSWORD" | docker login --username $DOCKER_USERNAME --password-stdin
+  
 before-script:
-  - docker build -t test .
+  - docker build --target test --tag test .
+  - docker build --target production --tag $DOCKER_USERNAME/todo-app:latest .
 
 script:
   - docker run test tests/test_viewmodel.py
@@ -14,3 +18,6 @@ script:
     -e TRELLO_BOARD_ID=$TRELLO_BOARD_ID
     -e SECRET_KEY=$SECRET_KEY
     test tests/test_e2e.py
+
+after-script:
+  - docker push $DOCKER_USERNAME/todo-app:latest
