@@ -18,7 +18,7 @@ WORKDIR /app
 FROM base as production
 RUN pip install gunicorn flask
 EXPOSE $PORT
-ENTRYPOINT ["poetry run gunicorn -w 4 -b 0.0.0.0:$PORT app:'app']
+ENTRYPOINT ["gunicorn -b 0.0.0.0:$PORT 'app:create_app()'"]
 
 FROM base as development
 EXPOSE 5000
