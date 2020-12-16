@@ -18,7 +18,7 @@ WORKDIR /app
 FROM base as production
 RUN pip install gunicorn
 EXPOSE $PORT
-ENTRYPOINT ["./entrypoint_prod.sh"]
+ENTRYPOINT bash ./entrypoint_prod.sh
 
 FROM base as development
 EXPOSE 5000
