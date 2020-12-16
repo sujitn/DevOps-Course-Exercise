@@ -16,7 +16,7 @@ COPY . ./app
 WORKDIR /app
 
 FROM base as production
-RUN pip install gunicorn
+RUN pip install gunicorn flask
 EXPOSE $PORT
 ENTRYPOINT bash ./entrypoint_prod.sh
 
