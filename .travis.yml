@@ -1,8 +1,16 @@
 services:
 - docker
 
+before-install:
+  - echo "$DOCKER_PASSWORD" | docker login --username $DOCKER_USERNAME --password-stdin #login to docker hub
+  - curl https://cli-assets.heroku.com/install.sh | sh  #install heroku
+  - docker login --username=$HEROKU_LOGIN --password=$HEROKU_API_KEY registry.heroku.com  #login to registry.heroku.com
+  
+  
 before-script:
-  - docker build -t test .
+  - docker build --target test --tag test .
+  - docker build --target production --tag $DOCKER_USERNAME/todo-app:latest .
+  - docker tag $DOCKER_USERNAME/todo-app:latest registry.heroku.com/$HEROKU_APP/web
 
 script:
   - docker run test tests/test_viewmodel.py
@@ -14,3 +22,14 @@ script:
     -e TRELLO_BOARD_ID=$TRELLO_BOARD_ID
     -e SECRET_KEY=$SECRET_KEY
     test tests/test_e2e.py
+
+after-script:
+  - docker push $DOCKER_USERNAME/todo-app:latest
+
+deploy:   
+        provider: script
+        script: 
+               docker push registry.heroku.com/$HEROKU_APP/web;
+               heroku container:release web --app $HEROKU_APP
+        on:
+          branch: module8
