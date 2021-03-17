@@ -25,7 +25,9 @@ def test_app():
     file_path = find_dotenv()
     load_dotenv(file_path, override=True)
 
-    db_name = 'test-table-' + generate_random_string(10)
+    db_name = 'test-table-' + \
+        ''.join(random.choice(string.ascii_uppercase + string.digits)
+                for _ in range(10))
     collection = get_db_collection(db_name)
 
     # construct the new application

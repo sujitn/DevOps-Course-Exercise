@@ -17,9 +17,8 @@ script:
   - docker run test tests/test_integration.py
   - >
     docker run
-    -e TRELLO_API_KEY=$TRELLO_API_KEY
-    -e TRELLO_TOKEN=$TRELLO_TOKEN
-    -e TRELLO_BOARD_ID=$TRELLO_BOARD_ID
+    -e MONGO_DB_USER_NAME=$MONGO_DB_USER_NAME
+    -e MONGO_DB_PASSWORD=$MONGO_DB_PASSWORD
     -e SECRET_KEY=$SECRET_KEY
     test tests/test_e2e.py
 
