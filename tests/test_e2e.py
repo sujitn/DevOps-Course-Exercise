@@ -12,9 +12,9 @@ import pymongo
 import app
 
 
-def get_db_collection(database):
+def get_db_collection():
     dbClientUri = f"mongodb+srv://{os.getenv('MONGO_DB_USER_NAME')}:{os.getenv('MONGO_DB_PASSWORD')}@cluster0.59kpk.mongodb.net/?retryWrites=true&w=majority"
-    databaseName = database
+    databaseName = os.getenv('MONGO_DB_DATABASE_NAME')
     collectionName = 'collection'
 
     dbClient = pymongo.MongoClient(dbClientUri)
@@ -27,10 +27,10 @@ def test_app():
     file_path = find_dotenv()
     load_dotenv(file_path, override=True)
 
-    db_name = 'test-table-' + \
+    os.environ['MONGO_DB_DATABASE_NAME'] = 'test-' + \
         ''.join(random.choice(string.ascii_uppercase + string.digits)
                 for _ in range(10))
-    collection = get_db_collection(db_name)
+    collection = get_db_collection()
 
     # construct the new application
     application = app.create_app()
