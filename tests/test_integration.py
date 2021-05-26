@@ -2,7 +2,7 @@ from unittest.mock import patch, Mock
 from datetime import date, datetime, timedelta
 import pytest
 from dotenv import load_dotenv, find_dotenv
-from item import TrelloItem
+from item import Item
 import app
 
 
@@ -14,30 +14,30 @@ def client():
     with test_app.test_client() as client:
         yield client
 
+
+# @patch('app.get_db_collection')
 @patch('app.get_items')
 def test_index_page(get_items, client):
+
     get_items.side_effect = mock_get_items
 
     response = client.get('/')
 
     response_html = response.data.decode()
+
     assert 'Task 1' in response_html
     assert 'Task 2' in response_html
     assert 'Task 3' in response_html
-    
 
-def mock_get_items(api_key,token,board_id):
+
+def mock_get_items(collection):
     items = [
-        TrelloItem(1,'Done', 'Task 1', date.today()),
-        TrelloItem(2,'Doing', 'Task 2', date.today()),
-        TrelloItem(3,'ToDo', 'Task 3', date.today()),
+        Item(1, 'Done', 'Task 1', date.today()),
+        Item(2, 'Doing', 'Task 2', date.today()),
+        Item(3, 'ToDo', 'Task 3', date.today()),
     ]
     return items
-    
-def mock_get_lists(url, params):
-    if url == 'https://api.trello.com/1/boards/abcd1234/lists':
-        response = Mock(ok=True)
-        response.json.return_value = sample_trello_lists_response
-        return response
 
-    return None
+
+def mock_get_db_collection():
+    return
