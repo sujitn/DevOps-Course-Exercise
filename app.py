@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 import session_items as session
 from item import Item
-from trello import TrelloClient
 from viewModel import ViewModel
 import os
 import pymongo
@@ -17,15 +16,6 @@ from oauthlib.oauth2 import WebApplicationClient
 from writer_role_decorator import require_writer
 
 date_time_format = "%Y-%m-%dT%H:%M:%S.%fZ"
-
-
-def get_trello_board(api_key, token, board_id):
-    client = TrelloClient(
-        api_key=api_key,
-        token=token
-    )
-
-    return client.get_board(board_id)
 
 
 def get_items(collection):
