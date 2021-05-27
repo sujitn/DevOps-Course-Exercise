@@ -26,7 +26,7 @@ def get_db_collection():
 def test_app():
     file_path = find_dotenv()
     load_dotenv(file_path, override=True)
-
+    os.environ['LOGIN_DISABLED'] = 'TRUE'
     os.environ['MONGO_DB_DATABASE_NAME'] = 'test-' + \
         ''.join(random.choice(string.ascii_uppercase + string.digits)
                 for _ in range(10))

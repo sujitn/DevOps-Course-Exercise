@@ -3,8 +3,9 @@ from datetime import date
 
 
 class ViewModel:
-    def __init__(self, items):
+    def __init__(self, items, readonly):
         self._items = items
+        self._readonly = readonly
 
     @property
     def items(self):
@@ -33,3 +34,7 @@ class ViewModel:
     @property
     def older_done_items(self):
         return [item for item in self.done_items if not item.last_modified.date() == date.today()]
+
+    @property
+    def is_readonly(self):
+        return self._readonly

@@ -12,7 +12,7 @@ def test_items_by_status():
         Item(4, 'Doing', 'Task 4', date.today())
     ]
 
-    view_model = ViewModel(items)
+    view_model = ViewModel(items, False)
     print(view_model.todo_items)
     assert view_model.todo_items == [
         item for item in items if item.status == 'ToDo']
@@ -30,7 +30,7 @@ def test_show_done_items_if_less_than_3():
         Item(4, 'Done', 'Task 4', date.today()),
     ]
 
-    view_model = ViewModel(items)
+    view_model = ViewModel(items, False)
 
     assert view_model.show_all_done_items is True
 
@@ -43,7 +43,7 @@ def test_hide_done_items_if_greater_than_3():
         Item(4, 'Done', 'Task 4', date.today()),
     ]
 
-    view_model = ViewModel(items)
+    view_model = ViewModel(items, False)
 
     assert view_model.show_all_done_items is False
 
@@ -55,7 +55,7 @@ def test_recent_items_contain_today_done_items():
         Item(3, 'Doing', 'Task 3', datetime.now() - timedelta(hours=1)),
     ]
 
-    view_model = ViewModel(items)
+    view_model = ViewModel(items, False)
     assert view_model.recent_done_items == [
         item for item in items if item.id == 1]
 
@@ -68,6 +68,6 @@ def test_older_items_contain_today_done_items():
         Item(4, 'Done', 'Task 2', datetime.now() - timedelta(days=2)),
     ]
 
-    view_model = ViewModel(items)
+    view_model = ViewModel(items, False)
     assert view_model.older_done_items == [
         item for item in items if item.last_modified.date() < date.today()]
